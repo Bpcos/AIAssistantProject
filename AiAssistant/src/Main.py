@@ -1,7 +1,7 @@
 import sys
 import os
 from PyQt6.QtWidgets import QApplication
-from src.Main import AIModel
+from src.Model import AIModel
 from src.View import AIView
 from src.Controller import AppController
 

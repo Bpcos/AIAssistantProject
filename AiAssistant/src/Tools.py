@@ -1,79 +1,48 @@
-#This is a requirement for the Prompt Engineering course, 
-#This will add little functions that the LLM can call to perform specific tasks.
-import os
 import platform
-import datetime
+import os
 
 class ToolKit:
     """
-    The library of specific python commands the model can execute.
+    A collection of tools that the Gemini model can execute.
+    The docstrings are CRITICAL here; Gemini reads them to understand the tool.
     """
-    
-    @staticmethod
+
     def get_system_info():
-        """Returns OS, Version, and Machine info."""
+        """
+        Returns information about the current operating system, release, and machine architecture.
+        Use this when the user asks for system specs or computer details.
+        """
         return f"{platform.system()} {platform.release()} ({platform.machine()})"
 
-    @staticmethod
-    def create_file(filename, content):
-        """Creates a file with specific content."""
+    def create_file(filename: str, content: str):
+        """
+        Creates a new text file with the specified content.
+        
+        Args:
+            filename: The name of the file to create (e.g., 'notes.txt').
+            content: The text content to write into the file.
+        """
         try:
             with open(filename, 'w') as f:
                 f.write(content)
-            return f"Successfully created {filename}."
+            return f"Successfully created file: {filename}"
         except Exception as e:
             return f"Error creating file: {str(e)}"
 
-    @staticmethod
-    def calculate(expression):
-        """Safe math evaluation."""
+    def calculate(expression: str):
+        """
+        Evaluates a mathematical expression safely.
+        
+        Args:
+            expression: A string containing the math to solve (e.g., '2 + 2 * 5').
+        """
         try:
-            # specific safety check to prevent code injection
             allowed_chars = "0123456789+-*/(). "
             if any(c not in allowed_chars for c in expression):
-                return "Error: Unsafe characters in math expression."
+                return "Error: Unsafe characters detected."
             return str(eval(expression))
         except Exception as e:
             return f"Math Error: {str(e)}"
 
-    # Define your list of available tools for the LLM
-    # This is the schema sent to OpenAI
-    definitions = [
-        {
-            "type": "function",
-            "function": {
-                "name": "get_system_info",
-                "description": "Get the current computer's operating system information",
-                "parameters": {"type": "object", "properties": {}, "required": []}
-            }
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "create_file",
-                "description": "Create a new text file with specific content",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "filename": {"type": "string"},
-                        "content": {"type": "string"}
-                    },
-                    "required": ["filename", "content"]
-                }
-            }
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "calculate",
-                "description": "Perform a mathematical calculation",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "expression": {"type": "string", "description": "The math expression e.g. 2 + 2"}
-                    },
-                    "required": ["expression"]
-                }
-            }
-        }
-    ]
+    # List of functions to pass to the model
+    tools_list = [get_system_info, create_file, calculate]
