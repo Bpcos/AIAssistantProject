@@ -1,41 +1,30 @@
 import sys
 import os
-from dotenv import load_dotenv  # Import this
+from dotenv import load_dotenv 
 from PyQt6.QtWidgets import QApplication
 from src.Model import AIModel
 from src.View import AIView
 from src.Controller import AppController
 
-# 1. Load the .env file
 load_dotenv() 
 
-# 2. Get the key safely
 API_KEY = os.getenv("GEMINI_API_KEY")
+VEO_API_KEY = os.getenv("VEO_API_KEY") # Load the Veo key
 
 def main():
     app = QApplication(sys.argv)
     
-    # Check if key is missing
     if not API_KEY:
-        print("CRITICAL ERROR: GEMINI_API_KEY not found in environment or .env file.")
+        print("CRITICAL ERROR: GEMINI_API_KEY not found.")
         sys.exit(1)
 
-    # Initialize MVC components
+    # Initialize MVC
     controller = AppController()
     
-    # ... (Rest of your code remains the same)
-    system_prompt = """
-    You are an intelligent animated assistant. 
-    1. If the user asks for system info, use the get_system_info tool.
-    2. If the user asks to save something, use the create_file tool.
-    3. If the user asks for math, use the calculate tool.
-    4. If the user asks to open an app (like calculator or notepad), use the open_application tool.
+    system_prompt = "You are a helpful assistant."
     
-    Be concise and helpful. 
-    If you open an app, simply say "Opening [App Name]" and trigger the tool.
-    """
-    
-    model = AIModel(api_key=API_KEY, system_instruction=system_prompt)
+    # Pass both keys to the model
+    model = AIModel(api_key=API_KEY, veo_api_key=VEO_API_KEY, system_instruction=system_prompt)
     view = AIView(controller)
 
     controller.set_model(model)
