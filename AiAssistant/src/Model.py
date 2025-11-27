@@ -1,31 +1,32 @@
     
-import json
 import google.generativeai as genai
 from src.Tools import ToolKit
 
 class AIModel:
     def __init__(self, api_key, system_instruction):
-        # 1. Configure API
-        # The correct library 'google.generativeai' has the 'configure' method
         genai.configure(api_key=api_key)
+        self.api_key = api_key # Store for re-init if needed
+        self.tools = ToolKit.tools_list
         
-        # 2. Initialize Model with Tools
-        # We pass the actual python functions here.
+        # Initial Setup
+        self.init_model(system_instruction)
+
+    def init_model(self, prompt):
         self.model = genai.GenerativeModel(
-            model_name='gemini-2.5-flash', # "flash" is fast and free-tier eligible
-            tools=ToolKit.tools_list,
-            system_instruction=system_instruction
+            model_name='gemini-2.5-flash',
+            tools=self.tools,
+            system_instruction=prompt
         )
-        
-        # 3. Start a Chat Session
-        # enable_automatic_function_calling=True satisfies the "Action Executor" requirement
-        # by automatically running the code when the model requests it.
         self.chat_session = self.model.start_chat(enable_automatic_function_calling=True)
 
+    def update_system_instruction(self, new_prompt):
+        """Re-initializes the model with a new character persona"""
+        # Gemini API doesn't allow changing system prompt on existing object easily,
+        # so we re-instantiate the model. 
+        # Note: This resets conversation history (Memory).
+        self.init_model(new_prompt)
+
     def chat(self, user_input):
-        """
-        Sends message to Gemini, it executes tools if needed, and returns the text.
-        """
         try:
             response = self.chat_session.send_message(user_input)
             return response.text

@@ -215,3 +215,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+#Secret Stuff for me and me alone
+/Characters/Juliette

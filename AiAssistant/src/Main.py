@@ -29,7 +29,10 @@ def main():
     1. If the user asks for system info, use the get_system_info tool.
     2. If the user asks to save something, use the create_file tool.
     3. If the user asks for math, use the calculate tool.
-    Be concise and helpful.
+    4. If the user asks to open an app (like calculator or notepad), use the open_application tool.
+    
+    Be concise and helpful. 
+    If you open an app, simply say "Opening [App Name]" and trigger the tool.
     """
     
     model = AIModel(api_key=API_KEY, system_instruction=system_prompt)
