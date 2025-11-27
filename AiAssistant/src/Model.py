@@ -1,10 +1,12 @@
+    
 import json
-from google import genai
+import google.generativeai as genai
 from src.Tools import ToolKit
 
 class AIModel:
     def __init__(self, api_key, system_instruction):
         # 1. Configure API
+        # The correct library 'google.generativeai' has the 'configure' method
         genai.configure(api_key=api_key)
         
         # 2. Initialize Model with Tools
@@ -29,3 +31,5 @@ class AIModel:
             return response.text
         except Exception as e:
             return f"Error communicating with Gemini: {str(e)}"
+
+  
