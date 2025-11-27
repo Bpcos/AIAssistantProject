@@ -12,7 +12,7 @@ class AIModel:
         # 2. Initialize Model with Tools
         # We pass the actual python functions here.
         self.model = genai.GenerativeModel(
-            model_name='gemini-1.5-flash', # "flash" is fast and free-tier eligible
+            model_name='gemini-2.5-flash', # "flash" is fast and free-tier eligible
             tools=ToolKit.tools_list,
             system_instruction=system_instruction
         )
