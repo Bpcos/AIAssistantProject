@@ -5,7 +5,7 @@ import subprocess
 class ToolKit:
     
     # Default fallback
-    selected_animation = "speaking"
+    selected_animation = "default"
 
     def set_animation(animation_name: str):
         """
@@ -35,6 +35,7 @@ class ToolKit:
             allowed_chars = "0123456789+-*/(). "
             if any(c not in allowed_chars for c in expression):
                 return "Error: Unsafe characters detected."
+            print (expression)
             return str(eval(expression))
         except Exception as e:
             return f"Math Error: {str(e)}"

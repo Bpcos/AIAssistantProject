@@ -35,22 +35,20 @@ class WorkerThread(QThread):
 
     def construct_veo_prompt(self, text):
         """
-        Logic: If text contains *actions*, use them. 
-        Else, use the first sentence as dialogue.
+        Use the first sentence as Dialogue. add in relevant details if the character says they are doing something.
         """
         # Look for text between asterisks e.g. *waves hand*
-        actions = re.findall(r'\*(.*?)\*', text)
+        #actions = re.findall(r'\*(.*?)\*', text)
         
-        if actions:
+        #if actions:
             # Use the first action found
-            action_desc = actions[0]
-            return f"Cinematic shot. The character performs this action: {action_desc}. High quality, 4k, fluid motion."
-        else:
+            #action_desc = actions[0]
+            #return f"Cinematic shot. The character performs this action: {action_desc}. High quality, 4k, fluid motion."
+        #else:
             # Use the first sentence for dialogue lip-sync style context
-            # (Note: Veo doesn't do perfect lip sync yet, but it creates the 'vibe')
-            first_sentence = text.split('.')[0]
-            if len(first_sentence) > 100: first_sentence = first_sentence[:100]
-            return f"Cinematic shot. The character is speaking conversationally. Context: {first_sentence}. Maintain eye contact, subtle movement."
+        first_sentence = text.split('.')[0]
+        if len(first_sentence) > 100: first_sentence = first_sentence[:100]
+        return f"Cinematic shot. The character is speaking conversationally. Context: {first_sentence}. Maintain eye contact, subtle movement."
 
 class AppController:
     def __init__(self):

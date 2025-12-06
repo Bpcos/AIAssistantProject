@@ -1,0 +1,6 @@
+Available tools:
+- get_system_info (Eye of the Ancients): Gathers information about the current system.
+- create_file (Scribividi): Creates a new file with specified content.
+- calculate (Mathemagic): Evaluates a mathematical expression.
+- open_application (Open Sesame): Launches a specified application.
+- set_animation: Selects a video animation to play.
