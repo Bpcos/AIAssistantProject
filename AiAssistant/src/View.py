@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, 
                              QLineEdit, QPushButton, QLabel, QComboBox, 
-                             QSizePolicy, QFrame, QSlider, QCheckBox) # Added QCheckBox
+                             QSizePolicy, QFrame, QSlider, QCheckBox) 
 from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PyQt6.QtMultimediaWidgets import QVideoWidget
 from PyQt6.QtCore import Qt, QUrl
@@ -90,7 +90,7 @@ class AIView(QWidget):
         volume_layout.addWidget(vol_label)
         volume_layout.addWidget(self.volume_slider)
 
-        # --- NEW: Veo Toggle ---
+        # Veo Toggle
         self.veo_checkbox = QCheckBox("Enable Generative Video (Veo)")
         self.veo_checkbox.setToolTip("Generates new videos on the fly based on response. Slow!")
         self.veo_checkbox.setStyleSheet("font-weight: bold; margin-top: 5px;")
@@ -99,7 +99,7 @@ class AIView(QWidget):
         right_layout.addWidget(self.char_selector)
         right_layout.addWidget(self.char_container)
         right_layout.addLayout(volume_layout)
-        right_layout.addWidget(self.veo_checkbox) # Add checkbox
+        right_layout.addWidget(self.veo_checkbox) 
         right_layout.addStretch()
 
         main_layout.addLayout(chat_layout, 50)
@@ -120,7 +120,6 @@ class AIView(QWidget):
         if text:
             self.chat_display.append(f"<br><b>You:</b> {text}")
             self.input_field.clear()
-            # Pass the toggle state to the controller
             use_veo = self.veo_checkbox.isChecked()
             self.controller.handle_user_input(text, use_veo)
 
@@ -134,9 +133,19 @@ class AIView(QWidget):
         self.idle_label.show()
 
     def play_video(self, video_path):
+        """Plays video (Visual + Audio)"""
         self.media_player.setSource(QUrl.fromLocalFile(video_path))
         self.idle_label.hide()
         self.video_widget.show()
+        self.media_player.play()
+
+    def play_audio(self, audio_path):
+        """Plays audio only (Visual stays on Idle Image)"""
+        # Ensure idle is shown (or currently playing video is hidden/stopped)
+        self.video_widget.hide()
+        self.idle_label.show()
+        
+        self.media_player.setSource(QUrl.fromLocalFile(audio_path))
         self.media_player.play()
 
     def change_volume(self, value):

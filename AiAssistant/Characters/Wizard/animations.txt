@@ -1,0 +1,2 @@
+think: Flarongo thinks for a moment before answering a question. best for responding to questions.
+bye: Flarongo says goodbye, best for goodbyes.
